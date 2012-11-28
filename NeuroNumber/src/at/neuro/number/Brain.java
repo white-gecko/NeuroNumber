@@ -12,44 +12,42 @@ public class Brain {
 	private NeuralNetwork network;
 
 	public Brain() {
-		this.network = new Perceptron(8, 4);
+		this.network = new Perceptron(2, 1);
 	}
 
 	public void train() {
 		// create training set
 		TrainingSet<SupervisedTrainingElement> trainingSet = new TrainingSet<SupervisedTrainingElement>(
-				8, 4);
+				2, 1);
 
-		String binI, binJ, binO;
 		double[] dI, dO;
-		for (int i = 0; i < 8; i++) {
-			binI = addZero(Integer.toBinaryString(i));
+		dI = new double[] {1,0};
+		dO = new double[] {1};
+		trainingSet.addElement(new SupervisedTrainingElement(dI, dO));
+		
 
-			for (int j = 0; j < 8; j++) {
-				binJ = addZero(Integer.toBinaryString(j));
-				binO = addZero(Integer.toBinaryString(i + j));
+		dI = new double[] {0,1};
+		dO = new double[] {1};
+		trainingSet.addElement(new SupervisedTrainingElement(dI, dO));
+		
 
-				dI = sToD(binI + binJ);
-				dO = sToD(binO);
-				
-				System.out.println("dI: " + binI + binJ + " l(" + dI.length + ")");
-				System.out.println("dO: " + binO + " l(" + dO.length + ")");
+		dI = new double[] {0,0};
+		dO = new double[] {0};
+		trainingSet.addElement(new SupervisedTrainingElement(dI, dO));
+		
 
-				trainingSet.addElement(new SupervisedTrainingElement(dI, dO));
-			}
-		}
+		dI = new double[] {1,1};
+		dO = new double[] {1};
+		trainingSet.addElement(new SupervisedTrainingElement(dI, dO));
+		
 		// learn the training set
 		this.network.learn(trainingSet);
 	}
 
 	public double ask(int a, int b) {
-
-		String binA, binB;
-		binA = addZero(Integer.toBinaryString(a));
-		binB = addZero(Integer.toBinaryString(b));
 		
 		// set network input
-		this.network.setInput(sToD(binA + binB));
+		this.network.setInput(new double[] {a,b});
 		// calculate network
 		this.network.calculate();
 		// get network output
@@ -60,24 +58,4 @@ public class Brain {
 		return networkOutput[0];
 
 	}
-
-	private double[] sToD(String s) {
-		double[] d = new double[s.length()];
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) == '1') {
-				d[i] = 1;
-			} else {
-				d[i] = 0;
-			}
-		}
-		return d;
-	}
-	
-	private String addZero (String s) {
-		while (s.length() < 4) {
-			s = '0' + s;
-		}
-		return s;
-	}
-
 }

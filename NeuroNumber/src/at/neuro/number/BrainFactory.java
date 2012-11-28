@@ -35,11 +35,11 @@ public class BrainFactory {
 		NeuralNetwork net;
 		// The network properties
 		String netLabel = "NeuroNumber";
-		Dimension dimension = new Dimension(40, 40);
+		Dimension dimension = new Dimension(30, 30);
 		ColorMode colorMode = ColorMode.BLACK_AND_WHITE;
 		List<Integer> hiddenLayers = new ArrayList<Integer>();
-		hiddenLayers.add(50);
-		hiddenLayers.add(20);
+		//hiddenLayers.add(50);
+		hiddenLayers.add(30);
 
 		// TODO load files from path
 		File dir = new File(path);

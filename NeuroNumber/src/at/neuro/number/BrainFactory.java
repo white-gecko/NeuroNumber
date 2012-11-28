@@ -27,7 +27,7 @@ public class BrainFactory {
 	 */
 	public NeuralNetwork createFromTrainset(String path) throws Exception {
 		// The trainings data
-		TrainingSet trainSet;
+		TrainingSet trainSet; // could be TrainingSet<TrainingElement>
 		List<String> labels = new ArrayList<String>();
 		Map<String, FractionRgbData> images;
 

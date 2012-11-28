@@ -3,8 +3,6 @@ package at.neuro.number;
 import java.io.File;
 import java.util.HashMap;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
-
 import org.neuroph.contrib.imgrec.ImageRecognitionPlugin;
 import org.neuroph.core.NeuralNetwork;
 

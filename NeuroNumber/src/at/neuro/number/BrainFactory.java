@@ -12,9 +12,10 @@ import org.neuroph.contrib.imgrec.ImageRecognitionHelper;
 import org.neuroph.contrib.imgrec.image.Dimension;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.learning.TrainingSet;
-import org.neuroph.easyneurons.imgrec.ImagesLoader;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
 import org.neuroph.util.TransferFunctionType;
+
+import at.neuro.number.easyneurons.imgrec.ImagesLoader;
 
 public class BrainFactory {
 
@@ -59,7 +60,7 @@ public class BrainFactory {
 			}
 
 			images.putAll(ImagesLoader.getFractionRgbDataForDirectory(
-					directory, new java.awt.Dimension(40, 40)));
+					directory, dimension));
 
 			label = directory.getName();
 			labels.add(label);

@@ -50,7 +50,10 @@ public class BrainFactory {
 		File[] content = dir.listFiles();
 		images = new HashMap<String, FractionRgbData>();
 
+		System.out.println("processing dir " + dir.getName());
+		
 		for (File directory : content) {
+			System.out.println("processing dir " + directory.getName());
 			if (!directory.isDirectory()) {
 				throw new Exception("The directory has to contain directories");
 			}

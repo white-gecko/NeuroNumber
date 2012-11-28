@@ -3,6 +3,8 @@ package at.neuro.number;
 import java.io.File;
 import java.util.HashMap;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+
 import org.neuroph.contrib.imgrec.ImageRecognitionPlugin;
 import org.neuroph.core.NeuralNetwork;
 
@@ -18,30 +20,35 @@ public class NeuroNumber {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		if (args.length <= 1) {
+		if (args.length < 1) {
 			throw new Exception(
 					"Please specify at lease one driectory with image folders");
 		}
 
-		String loadPath = args[1];
+		String loadPath = args[0];
 
 		String storePath = null;
 		
 		String filePath = null;
 
-		if (args.length > 2) {
-			storePath = args[2];
+		if (args.length > 1) {
+			storePath = args[1];
 			if (storePath == "null") {
 				storePath = null;
 			}
 		}
-		if (args.length > 3) {
+		if (args.length > 2) {
 			filePath = args[2];
 			if (filePath == "null") {
 				filePath = null;
 			}
 		}
 
+		System.out.println("Start programm with:");
+		System.out.println("loadPath: " + loadPath);
+		System.out.println("storePath: " + storePath);
+		System.out.println("filePath: " + filePath);
+		
 		NeuroNumber app = new NeuroNumber(loadPath, storePath, filePath);
 		app.run();
 	}

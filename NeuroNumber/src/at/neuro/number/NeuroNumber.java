@@ -31,7 +31,7 @@ public class NeuroNumber {
 		String loadPath = cmd.getOptionValue(loadPathOption);
 		String storePath = cmd.getOptionValue(storePathOption);
 		String filePath = cmd.getOptionValue(filePathOption);
-		boolean verbose = cmd.getOptionValue(verboseOption);
+		boolean verbose = cmd.getOptionValue(verboseOption, false);
 
 		NeuroNumber app = new NeuroNumber(mode, loadPath, storePath, filePath,
 				verbose);
@@ -51,6 +51,12 @@ public class NeuroNumber {
 
 		if (mode.compareTo("learn") == 0) {
 			System.out.println("Start programm in learn mode.");
+			
+			if (loadPath == null || storePath == null) {
+				System.out.println("Please specify a directory with images '--loadPath' and a place where to store the network '--filePath'.");
+				return;
+			}
+			
 			if (verbose) {
 				System.out.println("Learning from: " + loadPath + ".");
 				System.out.println("And later storring the results at: "
@@ -59,6 +65,12 @@ public class NeuroNumber {
 			trainAndSleep();
 		} else if (mode.compareTo("tell") == 0) {
 			System.out.println("Start programm in tell mode.");
+			
+			if (loadPath == null || filePath == null) {
+				System.out.println("Please specify a network '--loadPath' and an imageFile '--filePath'.");
+				return;
+			}
+
 			if (verbose) {
 				System.out.println("Loading the network from: " + loadPath
 						+ ".");

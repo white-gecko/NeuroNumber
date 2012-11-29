@@ -23,3 +23,18 @@ You can run the programm in two modes:
   * '-f' or '--filePath' specifies the image file which sould be recognized
 
 You can always switch the verbose output on with '-v' or '--verbose'.
+
+TODO
+----
+
+  * Expose other parameters as command line arguments e.g.:
+    * hidden layers
+    * input size
+    * learning mode (incl.: rate, max error, momentum)
+    * TransferFunctionType
+  * Find the best configuration
+  * GUI to draw characters
+    * for saving in the learning set
+    * and for recognition
+  * Presentation Slides
+  * Documentation of the functions and methods

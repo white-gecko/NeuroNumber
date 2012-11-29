@@ -36,5 +36,6 @@ TODO
   * GUI to draw characters
     * for saving in the learning set
     * and for recognition
+  * Add some more examples for training
   * Presentation Slides
   * Documentation of the functions and methods

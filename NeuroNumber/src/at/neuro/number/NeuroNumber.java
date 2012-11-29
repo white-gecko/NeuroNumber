@@ -1,16 +1,17 @@
 package at.neuro.number;
 
-import java.io.File;
 import java.util.HashMap;
 
-import org.neuroph.contrib.imgrec.ImageRecognitionPlugin;
-import org.neuroph.core.NeuralNetwork;
+import com.sanityinc.jargs.CmdLineParser;
+import com.sanityinc.jargs.CmdLineParser.Option;
 
 public class NeuroNumber {
 
+	private String mode = null;
 	private String storePath = null;
 	private String loadPath = null;
 	private String filePath = null;
+	private boolean verbose = false;
 
 	/**
 	 * @param args
@@ -18,59 +19,76 @@ public class NeuroNumber {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		if (args.length < 1) {
-			throw new Exception(
-					"Please specify at lease one driectory with image folders");
-		}
+		CmdLineParser cmd = new CmdLineParser();
+		Option<String> modeOption = cmd.addStringOption('m', "mode");
+		Option<String> loadPathOption = cmd.addStringOption('l', "loadPath");
+		Option<String> storePathOption = cmd.addStringOption('s', "storePath");
+		Option<String> filePathOption = cmd.addStringOption('f', "filePath");
+		Option<Boolean> verboseOption = cmd.addBooleanOption('v', "verbose");
+		cmd.parse(args);
 
-		String loadPath = args[0];
+		String mode = cmd.getOptionValue(modeOption, "tell");
+		String loadPath = cmd.getOptionValue(loadPathOption);
+		String storePath = cmd.getOptionValue(storePathOption);
+		String filePath = cmd.getOptionValue(filePathOption);
+		boolean verbose = cmd.getOptionValue(verboseOption);
 
-		String storePath = null;
-		
-		String filePath = null;
-
-		if (args.length > 1) {
-			storePath = args[1];
-			if (storePath == "null") {
-				storePath = null;
-			}
-		}
-		if (args.length > 2) {
-			filePath = args[2];
-			if (filePath == "null") {
-				filePath = null;
-			}
-		}
-
-		System.out.println("Start programm with:");
-		System.out.println("loadPath: " + loadPath);
-		System.out.println("storePath: " + storePath);
-		System.out.println("filePath: " + filePath);
-		
-		NeuroNumber app = new NeuroNumber(loadPath, storePath, filePath);
+		NeuroNumber app = new NeuroNumber(mode, loadPath, storePath, filePath,
+				verbose);
 		app.run();
 	}
 
-	public NeuroNumber(String loadPath, String storePath, String filePath) {
+	public NeuroNumber(String mode, String loadPath, String storePath,
+			String filePath, boolean verbose) {
+		this.mode = mode;
 		this.loadPath = loadPath;
 		this.storePath = storePath;
 		this.filePath = filePath;
+		this.verbose = verbose;
 	}
 
 	public void run() throws Exception {
 
-		System.out.println("create a new network and train it");
+		if (mode.compareTo("learn") == 0) {
+			System.out.println("Start programm in learn mode.");
+			if (verbose) {
+				System.out.println("Learning from: " + loadPath + ".");
+				System.out.println("And later storring the results at: "
+						+ storePath + ".");
+			}
+			trainAndSleep();
+		} else if (mode.compareTo("tell") == 0) {
+			System.out.println("Start programm in tell mode.");
+			if (verbose) {
+				System.out.println("Loading the network from: " + loadPath
+						+ ".");
+				System.out
+						.println("And trying to recognice: " + filePath + ".");
+			}
+			ask();
+		} else {
+			System.out.println("I don't know, what you mean with '" + mode
+					+ "' and my brain can't help me!");
+		}
+
+		System.out.println("Done.");
+	}
+
+	private void trainAndSleep() throws Exception {
+		System.out.println("Create a new brain and train it ...");
 		BrainFactory factory = new BrainFactory();
-		NeuralNetwork net = factory.createFromTrainset(loadPath);
+		Brain brain = factory.createFromTrainSet(loadPath, verbose);
 
-		net.save(storePath);
+		System.out.println("Putting the brain to sleep.");
+		brain.sleepAt(storePath, verbose);
+	}
 
-		System.out.println("try to recognize the given image");
-		ImageRecognitionPlugin imageRecognition = (ImageRecognitionPlugin) net
-				.getPlugin(ImageRecognitionPlugin.class);
-		
-        HashMap<String, Double> output = imageRecognition.recognizeImage(new File(filePath));
-        
-        System.out.println("The network returned: " + output.toString());
+	private void ask() throws Exception {
+		System.out.println("Wakeing up the brain ...");
+		BrainFactory factory = new BrainFactory();
+		Brain brain = factory.createFromFile(loadPath, verbose);
+
+		HashMap<String, Double> result = brain.ask(filePath, verbose);
+		brain.interprete(result, verbose);
 	}
 }

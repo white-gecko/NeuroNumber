@@ -1,61 +1,106 @@
 package at.neuro.number;
 
-import java.util.Arrays;
+import java.io.File;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
+import org.neuroph.contrib.imgrec.ImageRecognitionPlugin;
+import org.neuroph.contrib.imgrec.ImageSizeMismatchException;
 import org.neuroph.core.NeuralNetwork;
-import org.neuroph.core.learning.SupervisedTrainingElement;
-import org.neuroph.core.learning.TrainingSet;
-import org.neuroph.nnet.Perceptron;
 
 public class Brain {
+	public static final String NL = System.getProperty("line.separator");
 
 	private NeuralNetwork network;
 
-	public Brain() {
-		this.network = new Perceptron(2, 1);
+	public Brain(NeuralNetwork net) {
+		this.network = net;
 	}
 
-	public void train() {
-		// create training set
-		TrainingSet<SupervisedTrainingElement> trainingSet = new TrainingSet<SupervisedTrainingElement>(
-				2, 1);
+	public void train(boolean verbose) {
 
-		double[] dI, dO;
-		dI = new double[] {1,0};
-		dO = new double[] {1};
-		trainingSet.addElement(new SupervisedTrainingElement(dI, dO));
-		
+		// This method might to something, if we want to do incremental training
 
-		dI = new double[] {0,1};
-		dO = new double[] {1};
-		trainingSet.addElement(new SupervisedTrainingElement(dI, dO));
-		
-
-		dI = new double[] {0,0};
-		dO = new double[] {0};
-		trainingSet.addElement(new SupervisedTrainingElement(dI, dO));
-		
-
-		dI = new double[] {1,1};
-		dO = new double[] {1};
-		trainingSet.addElement(new SupervisedTrainingElement(dI, dO));
-		
 		// learn the training set
-		this.network.learn(trainingSet);
+		// this.network.learn(trainingSet);
 	}
 
-	public double ask(int a, int b) {
-		
-		// set network input
-		this.network.setInput(new double[] {a,b});
-		// calculate network
-		this.network.calculate();
-		// get network output
-		double[] networkOutput = this.network.getOutput();
+	public HashMap<String, Double> ask(String filePath, boolean verbose)
+			throws ImageSizeMismatchException, IOException {
+		System.out
+				.println("I try to guess what you mean with this scribbling ...");
+		ImageRecognitionPlugin imageRecognition = (ImageRecognitionPlugin) network
+				.getPlugin(ImageRecognitionPlugin.class);
 
-		System.out.println(Arrays.toString(networkOutput));
+		HashMap<String, Double> output = imageRecognition
+				.recognizeImage(new File(filePath));
 
-		return networkOutput[0];
+		if (verbose) {
+			System.out.println("The network returned: " + output.toString());
+		}
 
+		return output;
+
+	}
+
+	public void sleepAt(String storePath, boolean verbose) {
+		network.save(storePath);
+	}
+
+	public void interprete(HashMap<String, Double> result, boolean verbose) {
+
+		ValueComparator bvc = new ValueComparator(result);
+		TreeMap<String, Double> sortedResult = new TreeMap<String, Double>(bvc);
+		sortedResult.putAll(result);
+
+		if (verbose) {
+			System.out.println("Result: " + sortedResult);
+		}
+
+		Entry<String, Double> hit = sortedResult.firstEntry();
+
+		if (hit.getValue() > .9) {
+			System.out.println("It must be a '" + hit.getKey() + "' ("
+					+ hit.getValue() + ").");
+		} else if (hit.getValue() > .8) {
+			System.out.println("I'm quite sure it is a '" + hit.getKey() + "' ("
+					+ hit.getValue() + ").");
+		} else if (hit.getValue() > .5) {
+			System.out.println("I think it is a '" + hit.getKey() + "' ("
+					+ hit.getValue() + ").");
+		} else {
+			System.out.print("I could be a ");
+
+			for (String number : sortedResult.keySet()) {
+				System.out.print("'" + number + "' (" + sortedResult.get(number) + ")"
+						+ NL + "or maybe a ");
+			}
+			System.out.println("something else …");
+		}
+	}
+
+	class ValueComparator implements Comparator<String> {
+
+		Map<String, Double> base;
+
+		public ValueComparator(Map<String, Double> base) {
+			this.base = base;
+		}
+
+		// Note: this comparator imposes orderings that are inconsistent with
+		// equals.
+		public int compare(String a, String b) {
+			if (base.get(a) > base.get(b)) {
+				return -1;
+			} else if (base.get(a) < base.get(b)) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
 	}
 }

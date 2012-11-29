@@ -21,11 +21,13 @@ public class BrainFactory {
 
 	/**
 	 * Train a new network with given image files
+	 * 
 	 * @param path
 	 * @return
 	 * @throws Exception
 	 */
-	public NeuralNetwork createFromTrainset(String path) throws Exception {
+	public Brain createFromTrainSet(String path, boolean verbose)
+			throws Exception {
 		// The trainings data
 		TrainingSet trainSet; // could be TrainingSet<TrainingElement>
 		List<String> labels = new ArrayList<String>();
@@ -38,8 +40,8 @@ public class BrainFactory {
 		Dimension dimension = new Dimension(30, 30);
 		ColorMode colorMode = ColorMode.BLACK_AND_WHITE;
 		List<Integer> hiddenLayers = new ArrayList<Integer>();
-		//hiddenLayers.add(50);
-		hiddenLayers.add(30);
+		// hiddenLayers.add(50);
+		hiddenLayers.add(50);
 
 		// TODO load files from path
 		File dir = new File(path);
@@ -51,10 +53,15 @@ public class BrainFactory {
 		File[] content = dir.listFiles();
 		images = new HashMap<String, FractionRgbData>();
 
-		System.out.println("processing dir " + dir.getName());
-		
+		if (verbose) {
+			System.out.println("processing dir " + dir.getName());
+		}
+
 		for (File directory : content) {
-			System.out.println("processing dir " + directory.getName());
+			if (verbose) {
+				System.out.println("processing dir " + directory.getName());
+			}
+
 			if (!directory.isDirectory()) {
 				throw new Exception("The directory has to contain directories");
 			}
@@ -72,25 +79,27 @@ public class BrainFactory {
 		net = ImageRecognitionHelper.createNewNeuralNetwork(netLabel,
 				dimension, colorMode, labels, hiddenLayers,
 				TransferFunctionType.SIGMOID);
-		
+
 		// specify learningrull
-        MomentumBackpropagation backpropagation = new MomentumBackpropagation();
-        backpropagation.setLearningRate(0.1);
-        backpropagation.setMaxError(0.01);
-        backpropagation.setMomentum(0.0);
-		
+		MomentumBackpropagation backpropagation = new MomentumBackpropagation();
+		backpropagation.setLearningRate(0.1);
+		backpropagation.setMaxError(0.01);
+		backpropagation.setMomentum(0.0);
+
 		net.learn(trainSet, backpropagation);
-		//learnInNewThread();
-		return net;
+		// learnInNewThread();
+
+		return new Brain(net);
 	}
 
 	/**
 	 * Load a ready traines network from a file
+	 * 
 	 * @param loadPath
 	 * @return
 	 */
-	public NeuralNetwork createFromFile(String loadPath) {
+	public Brain createFromFile(String loadPath, boolean verbose) {
 		NeuralNetwork net = NeuralNetwork.load(loadPath);
-		return net;
+		return new Brain(net);
 	}
 }

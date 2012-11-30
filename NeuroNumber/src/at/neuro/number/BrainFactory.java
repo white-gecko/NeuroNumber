@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.neuroph.contrib.imgrec.ColorMode;
-import org.neuroph.contrib.imgrec.FractionRgbData;
-import org.neuroph.contrib.imgrec.ImageRecognitionHelper;
-import org.neuroph.contrib.imgrec.image.Dimension;
+import org.neuroph.imgrec.ColorMode;
+import org.neuroph.imgrec.FractionRgbData;
+import org.neuroph.imgrec.ImageRecognitionHelper;
+import org.neuroph.imgrec.image.Dimension;
 import org.neuroph.core.NeuralNetwork;
-import org.neuroph.core.learning.TrainingSet;
+import org.neuroph.core.learning.DataSet;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
 import org.neuroph.util.TransferFunctionType;
 
@@ -29,7 +29,7 @@ public class BrainFactory {
 	public Brain createFromTrainSet(String path, boolean verbose)
 			throws Exception {
 		// The trainings data
-		TrainingSet trainSet; // could be TrainingSet<TrainingElement>
+		DataSet trainSet; // could be TrainingSet<TrainingElement>
 		List<String> labels = new ArrayList<String>();
 		Map<String, FractionRgbData> images;
 

@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import org.neuroph.contrib.imgrec.ImageRecognitionPlugin;
-import org.neuroph.contrib.imgrec.ImageSizeMismatchException;
+import org.neuroph.imgrec.ImageRecognitionPlugin;
+import org.neuroph.imgrec.ImageSizeMismatchException;
 import org.neuroph.core.NeuralNetwork;
 
 public class Brain {

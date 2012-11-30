@@ -25,11 +25,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.neuroph.contrib.imgrec.FractionRgbData;
-import org.neuroph.contrib.imgrec.ImageSampler;
-import org.neuroph.contrib.imgrec.image.Dimension;
-import org.neuroph.contrib.imgrec.image.Image;
-import org.neuroph.contrib.imgrec.image.ImageFactory;
+import org.neuroph.imgrec.FractionRgbData;
+import org.neuroph.imgrec.ImageSampler;
+import org.neuroph.imgrec.image.Dimension;
+import org.neuroph.imgrec.image.Image;
+import org.neuroph.imgrec.image.ImageFactory;
 
 public class ImagesLoader
 {

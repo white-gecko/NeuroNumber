@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.neuroph.contrib.imgrec.image.Image;
-import org.neuroph.contrib.imgrec.image.ImageFactory;
+import org.neuroph.imgrec.image.Image;
+import org.neuroph.imgrec.image.ImageFactory;
 
 /**
  * This class provides Iterator for the image files (jpg and png) in the

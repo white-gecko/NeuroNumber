@@ -6,8 +6,13 @@ A digit recognition tool based on [Neuroph](http://neuroph.sourceforge.net/).
 Requirements
 ------------
 You have to get:
-  * the [neuroph jar](http://sourceforge.net/projects/neuroph/files/neuroph%202.6/neuroph-2.6.zip/download) (we are using neuroph-2.6) from the [download section](http://neuroph.sourceforge.net/download.html)
-  * and the [jargs jar](https://github.com/downloads/white-gecko/jargs/jargs-2.0-SNAPSHOT.jar) which I have compiled for you.
+  * Java 7
+  * [neuroph 2.7](http://sourceforge.net/projects/neuroph/files/neuroph-2.7/neuroph-2.7.zip/download) (2.6 has different package names) from the [download section](http://neuroph.sourceforge.net/download.html)
+    * neuroph-core-2.7.jar
+    * neuroph-imgrec-2.7.jar
+  * and [jargs](https://github.com/purcell/jargs) (or [my fork](https://github.com/white-gecko/jargs))
+    * [jargs-2.0-SNAPSHOT.jar](https://github.com/downloads/white-gecko/jargs/jargs-2.0-SNAPSHOT.jar)
+ which I have compiled for you works
 
 Usage
 -----

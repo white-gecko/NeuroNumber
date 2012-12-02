@@ -35,7 +35,7 @@ You can run the programm in two modes:
 **Advanced Options**
   * `-x` or `--imageWidth` and `-y` or `--imageHeight` Set the dimensions to which the input images should be scalled. width × height = size of input layer
   * `--hiddenLayers` Set the configuration of the hidden layers e.g. `50,30,20` would mean, there are 3 hidden layers: 1st with 50 neurons, 2nd with 30 neurons and 3rd with 20 neurons
-  * `-r` or `--learningRule` (**experimenatl**) Set the learning rule to use for training the network e.g. [`org.neuroph.nnet.learning.MomentumBackpropagation`](http://neuroph.sourceforge.net/javadoc/org/neuroph/nnet/learning/MomentumBackpropagation.html). You might get warnings if the selected learning rule is somehow not compatible with the network or if there are problems instanciating the class.
+  * `-r` or `--learningRule` (*experimental*) Set the learning rule to use for training the network e.g. [`org.neuroph.nnet.learning.MomentumBackpropagation`](http://neuroph.sourceforge.net/javadoc/org/neuroph/nnet/learning/MomentumBackpropagation.html). You might get warnings if the selected learning rule is somehow not compatible with the network or if there are problems instanciating the class.
 
 TODO
 ----

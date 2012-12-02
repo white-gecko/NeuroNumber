@@ -22,7 +22,7 @@ You can always switch the verbose output on with `-v` or `--verbose` and you can
 
 You can run the programm in two modes:
 
-###Lear
+###Learn
   * `-m` or `--mode` is set to `learn`
   * `-l` or `--loadPath` specifies the directory with the letters to learn
   * `-s` or `--storePath` specifies where the resulting network file (.nnet) should be saved

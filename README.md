@@ -17,19 +17,24 @@ You have to get:
 Usage
 -----
 
+You can always switch the verbose output on with `-v` or `--verbose` and you can get license information with `--license`.
+
 You can run the programm in two modes:
 
-**Lear**
-  * '-m' or '--mode' is set to 'learn'
-  * '-l' or '--loadPath' specifies the directory with the letters to learn
-  * '-s' or '--storePath' specifies where the resulting network file (.nnet) should be saved
+###Lear
+  * `-m` or `--mode` is set to `learn`
+  * `-l` or `--loadPath` specifies the directory with the letters to learn
+  * `-s` or `--storePath` specifies where the resulting network file (.nnet) should be saved
 
-**Tell**
-  * '-m' or '--mode' is set to 'tell'
-  * '-l' or '--loadPath' specifies the path to the network file (.nnet) created in *learn mode*
-  * '-f' or '--filePath' specifies the image file which sould be recognized
+###Tell
+  * `-m` or `--mode` is set to `tell`
+  * `-l` or `--loadPath` specifies the path to the network file (.nnet) created in *learn mode*
+  * `-f` or `--filePath` specifies the image file which sould be recognized
 
-You can always switch the verbose output on with '-v' or '--verbose'.
+**Advanced Options**
+  * `-x` or `--imageWidth` and `-y` or `--imageHeight` Set the dimensions to which the input images should be scalled. width × height = size of input layer
+  * `--hiddenLayers` Set the configuration of the hidden layers e.g. `50,30,20` would mean, there are 3 hidden layers: 1st with 50 neurons, 2nd with 30 neurons and 3rd with 20 neurons
+  * `-r` or `--learningRule` (**experimenatl**) Set the learning rule to use for training the network e.g. [`org.neuroph.nnet.learning.MomentumBackpropagation`](http://neuroph.sourceforge.net/javadoc/org/neuroph/nnet/learning/MomentumBackpropagation.html). You might get warnings if the selected learning rule is somehow not compatible with the network or if there are problems instanciating the class.
 
 TODO
 ----

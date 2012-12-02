@@ -3,6 +3,8 @@ NeuroNumber
 
 A digit recognition tool based on [Neuroph](http://neuroph.sourceforge.net/).
 
+You can download the current development version of NeuroNumber at the Downloads section ([NeuroNumber.jar](https://github.com/downloads/white-gecko/NeuroNumber/NeuroNumber.jar)).
+
 Requirements
 ------------
 You have to get:
@@ -16,7 +18,6 @@ You have to get:
 
 Usage
 -----
-
 You can always switch the verbose output on with `-v` or `--verbose` and you can get license information with `--license`.
 
 You can run the programm in two modes:

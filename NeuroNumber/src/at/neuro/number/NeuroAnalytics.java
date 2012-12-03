@@ -1,16 +1,10 @@
 package at.neuro.number;
 
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-
-import org.neuroph.imgrec.ImageSizeMismatchException;
-
-import com.sanityinc.jargs.CmdLineParser;
-import com.sanityinc.jargs.CmdLineParser.Option;
 
 public class NeuroAnalytics {
 

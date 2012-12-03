@@ -62,7 +62,8 @@ public class NeuroNumber {
 		Integer neuronsInLayer = cmd.getOptionValue(neuronsOption);
 		// distinguish between modes
 		if (mode.compareTo("al") == 0) {
-			NeuroAnalytics analytics = new NeuroAnalytics(loadPath, low, high, step, param, neuronsInLayer, verbose);
+			// the code is running in constructor
+			new NeuroAnalytics(loadPath, low, high, step, param, neuronsInLayer, verbose);
 		}
 		else {
 			NeuroNumber app = new NeuroNumber(mode, loadPath, storePath, filePath,

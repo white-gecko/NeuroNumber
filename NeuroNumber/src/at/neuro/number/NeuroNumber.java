@@ -60,7 +60,7 @@ public class NeuroNumber {
 		Double high = cmd.getOptionValue(highOption);
 		Double step = cmd.getOptionValue(stepOption);
 		String param = cmd.getOptionValue(paramOption);
-		int neuronsInLayer = cmd.getOptionValue(neuronsOption, 50);
+		Integer neuronsInLayer = cmd.getOptionValue(neuronsOption, null);
 		int setSize = cmd.getOptionValue(setsizeOption, -1);
 		// distinguish between modes
 		if (mode.compareTo("al") == 0) {

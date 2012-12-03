@@ -31,7 +31,7 @@ public class Brain {
 
 	public HashMap<String, Double> ask(String filePath, boolean verbose)
 			throws ImageSizeMismatchException, IOException {
-		System.out
+		if (verbose) System.out
 				.println("I try to guess what you mean with this scribbling ...");
 		ImageRecognitionPlugin imageRecognition = (ImageRecognitionPlugin) network
 				.getPlugin(ImageRecognitionPlugin.class);

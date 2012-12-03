@@ -1,4 +1,4 @@
-NeuroNumber
+﻿NeuroNumber
 ===========
 
 A digit recognition tool based on [Neuroph](http://neuroph.sourceforge.net/).
@@ -36,6 +36,18 @@ You can run the programm in two modes:
   * `-x` or `--imageWidth` and `-y` or `--imageHeight` Set the dimensions to which the input images should be scalled. width × height = size of input layer
   * `--hiddenLayers` Set the configuration of the hidden layers e.g. `50,30,20` would mean, there are 3 hidden layers: 1st with 50 neurons, 2nd with 30 neurons and 3rd with 20 neurons
   * `-r` or `--learningRule` (*experimental*) Set the learning rule to use for training the network e.g. [`org.neuroph.nnet.learning.MomentumBackpropagation`](http://neuroph.sourceforge.net/javadoc/org/neuroph/nnet/learning/MomentumBackpropagation.html). You might get warnings if the selected learning rule is somehow not compatible with the network or if there are problems instanciating the class.
+
+###Analyze
+  * `-m` or `--mode` is set to `al`
+  * `-p` or `--param` specifies parameter to be changed - hidden(count of hidden neurons-1 layer), layer(count of layers), lrate(learning rate)
+  * `--lo` specifies the lower bound for given parameters
+  * `--hi` specifies the higher bound for given parameters
+  * `--st` specifies the step for increase. For -p layer not compulsory(by default 1)
+  * `--nr` specifies number of neurons in each hidden layer, compulsory by option -p layer.
+  * example: (java -jar neuronumber.jar) -m al -p hidden --lo 10 --hi 30 --st 5 would analyze the accuracy with 10,15,..30 neurons(in 1 hidden layer)
+  * example: (java -jar neuronumber.jar) -m al -p layer --lo 1 --hi 3 --nr 10 would analyze the accuracy with 1,2,3 hidden layers(having each 10 neurons)
+
+
 
 TODO
 ----

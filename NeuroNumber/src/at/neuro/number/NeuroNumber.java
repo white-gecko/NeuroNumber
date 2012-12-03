@@ -38,6 +38,11 @@ public class NeuroNumber {
 		Option<String> learningRuleOption = cmd.addStringOption('r',
 				"learningRule");
 		Option<Boolean> licenseOption = cmd.addBooleanOption("license");
+		Option<String> paramOption = cmd.addStringOption('p', "param");
+		Option<Double> lowOption = cmd.addDoubleOption("lo");
+		Option<Double> highOption = cmd.addDoubleOption("hi");
+		Option<Double> stepOption = cmd.addDoubleOption("st");
+		Option<Integer> neuronsOption = cmd.addIntegerOption("nr");
 		cmd.parse(args);
 
 		String mode = cmd.getOptionValue(modeOption, "tell");
@@ -50,28 +55,34 @@ public class NeuroNumber {
 		String layers = cmd.getOptionValue(layerOption);
 		String ruleString = cmd.getOptionValue(learningRuleOption);
 		boolean license = cmd.getOptionValue(licenseOption, false);
-
-
-		NeuroNumber app = new NeuroNumber(mode, loadPath, storePath, filePath,
-				verbose);
-		
-
-		if (license) {
-			app.printLicense();
-			return;
+		Double  low = cmd.getOptionValue(lowOption);
+		Double high = cmd.getOptionValue(highOption);
+		Double step = cmd.getOptionValue(stepOption);
+		String param = cmd.getOptionValue(paramOption);
+		Integer neuronsInLayer = cmd.getOptionValue(neuronsOption);
+		// distinguish between modes
+		if (mode.compareTo("al") == 0) {
+			NeuroAnalytics analytics = new NeuroAnalytics(loadPath, low, high, step, param, neuronsInLayer, verbose);
 		}
+		else {
+			NeuroNumber app = new NeuroNumber(mode, loadPath, storePath, filePath,
+					verbose);
+			if (license) {
+				app.printLicense();
+				return;
+			}
 
-		if (width > 0 && height > 0) {
-			app.setDimensions(width, height);
-		}
-		if (layers != null) {
-			app.setLayers(layers);
-		}
-		if (ruleString != null) {
-			app.setLearningRule(ruleString);
-		}
-
-		app.run();
+			if (width > 0 && height > 0) {
+				app.setDimensions(width, height);
+			}
+			if (layers != null) {
+				app.setLayers(layers);
+			}
+			if (ruleString != null) {
+				app.setLearningRule(ruleString);
+			}
+			app.run();
+			}
 	}
 
 	public NeuroNumber(String mode, String loadPath, String storePath,
@@ -176,7 +187,7 @@ public class NeuroNumber {
 		InputStream is = getClass().getResourceAsStream("neuronumber-license.txt");
 	    InputStreamReader isr = new InputStreamReader(is);
 	    BufferedReader br = new BufferedReader(isr);
-	    
+
 	    String line;
 	    while ((line = br.readLine()) != null) {
 			System.out.println(line);
@@ -188,7 +199,7 @@ public class NeuroNumber {
 		is = getClass().getResourceAsStream("jargs-license.txt");
 	    isr = new InputStreamReader(is);
 	    br = new BufferedReader(isr);
-	    
+
 	    while ((line = br.readLine()) != null) {
 			System.out.println(line);
 		}
@@ -199,7 +210,7 @@ public class NeuroNumber {
 		is = getClass().getResourceAsStream("neuroph-license.txt");
 	    isr = new InputStreamReader(is);
 	    br = new BufferedReader(isr);
-	    
+
 	    while ((line = br.readLine()) != null) {
 			System.out.println(line);
 		}

@@ -46,6 +46,7 @@ public class BrainFactory {
 	 * The learning rule which is used to train the network
 	 */
 	private LearningRule learningRule = null;
+	private Double MBP_learnRate = 0.1;
 
 	/**
 	 * The constructor method, used to set default values
@@ -59,7 +60,7 @@ public class BrainFactory {
 	/**
 	 * Set the dimensions to which the input images should be scalled w × h =
 	 * size of input layer
-	 * 
+	 *
 	 * @param w
 	 *            value for imageWidth
 	 * @param h
@@ -74,7 +75,7 @@ public class BrainFactory {
 	 * Set the configuration of the hidden layers e.g. {50, 30, 20} would mean,
 	 * there are 3 hidden layers: 1st with 50 neurons, 2nd with 30 neurons and
 	 * 3rd with 20 neurons
-	 * 
+	 *
 	 * @param layers an array with the configuration of the hidden layers
 	 */
 	public void setHiddenLayers(int[] layers) {
@@ -88,15 +89,19 @@ public class BrainFactory {
 	/**
 	 * Set the learning rule to use for training the network
 	 * @param learningRule an instance of LearningRule
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws ClassNotFoundException
 	 */
 	public void setLearningRule(String learningRuleClass) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		
+
 		Class<LearningRule> lr = (Class<LearningRule>) Class.forName(learningRuleClass);
-		
+
 		learningRule = lr.newInstance();
+	}
+
+	public void setMBP_learnRate(Double learnRate) {
+		MBP_learnRate = learnRate;
 	}
 
 	/**
@@ -108,13 +113,13 @@ public class BrainFactory {
 	}
 
 	/**
-	 * Get the learning rule 
+	 * Get the learning rule
 	 * @return
 	 */
 	private LearningRule getLearningRule() {
 		if (learningRule == null) {
 			MomentumBackpropagation backpropagation = new MomentumBackpropagation();
-			backpropagation.setLearningRate(0.1);
+			backpropagation.setLearningRate(MBP_learnRate);
 			backpropagation.setMaxError(0.01);
 			backpropagation.setMomentum(0.0);
 
@@ -125,7 +130,7 @@ public class BrainFactory {
 
 	/**
 	 * Train a new network with the given image files
-	 * 
+	 *
 	 * @param path the path to the input image file
 	 * @param verbose whether the console output should be verbose
 	 * @return a new instance of Brain, which is a wrapper class of NeuralNetwork
@@ -193,7 +198,7 @@ public class BrainFactory {
 
 	/**
 	 * Load a ready trained network from a file
-	 * 
+	 *
 	 * @param loadPath path to the .nnet file of the neural network
 	 * @param verbose whether the console output should be verbose
 	 * @return a new instance of Brain, which is a wrapper class of NeuralNetwork

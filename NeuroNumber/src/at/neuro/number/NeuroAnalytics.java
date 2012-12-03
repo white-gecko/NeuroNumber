@@ -61,7 +61,7 @@ public class NeuroAnalytics {
 		// be overwritten each time; Constructor needs the path to training set
 		// cycle for the parameter examined
 		while ( next <= high) {
-			System.out.println(next.toString()+";");
+			System.out.print(next.toString()+";");
 			// depending on -p option either hidden or learning rate are changed
 			if (param.compareTo("hidden")== 0) {
 				hidden = next.intValue();

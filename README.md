@@ -44,6 +44,7 @@ You can run the programm in two modes:
   * `--hi` specifies the higher bound for given parameters
   * `--st` specifies the step for increase. For -p layer not compulsory(by default 1)
   * `--nr` specifies number of neurons in each hidden layer, compulsory by option -p layer.
+  * `--sz` specifies the set size spezifies how many of the images in the training set are used for this run.
   * example: (java -jar neuronumber.jar) -m al -p hidden --lo 10 --hi 30 --st 5 would analyze the accuracy with 10,15,..30 neurons(in 1 hidden layer)
   * example: (java -jar neuronumber.jar) -m al -p layer --lo 1 --hi 3 --nr 10 would analyze the accuracy with 1,2,3 hidden layers(having each 10 neurons)
 

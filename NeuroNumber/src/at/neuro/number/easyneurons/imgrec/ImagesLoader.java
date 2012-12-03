@@ -41,7 +41,7 @@ public class ImagesLoader
      * @return
      * @throws java.io.IOException
      */
-  public static Map<String, FractionRgbData> getFractionRgbDataForDirectory(File imgDir, Dimension samplingResolution) throws IOException
+  public static Map<String, FractionRgbData> getFractionRgbDataForDirectory(File imgDir, Dimension samplingResolution, int setSize) throws IOException
   {
     if(!imgDir.isDirectory()) {
       throw new IOException("The given file must be a directory.  Argument is: " + imgDir);
@@ -49,7 +49,7 @@ public class ImagesLoader
     
     Map<String, FractionRgbData> rgbDataMap = new HashMap<String, FractionRgbData>();
     
-    ImagesIterator imagesIterator = new ImagesIterator(imgDir);
+    ImagesIterator imagesIterator = new ImagesIterator(imgDir, setSize);
     while (imagesIterator.hasNext()) {
       Image img = imagesIterator.next();
       img = ImageSampler.downSampleImage(samplingResolution, img);

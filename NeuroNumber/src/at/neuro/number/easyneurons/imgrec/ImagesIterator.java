@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.neuroph.imgrec.image.Image;
 import org.neuroph.imgrec.image.ImageFactory;
@@ -37,16 +38,25 @@ import org.neuroph.imgrec.image.ImageFactory;
  * @author Jon Tait
  */
 public class ImagesIterator implements Iterator<Image> {
+	private int setSize = -1;
+	private int position = 0;
 	private Iterator<File> imageIterator;
 	private String currentFilename = null;
 
+
+	public ImagesIterator(File dir) throws IOException {
+		this(dir, -1);
+	}
+	
 	/**
 	 * Creates image Iterator for the specified dir
 	 * 
 	 * @param dir
 	 * @throws java.io.IOException
 	 */
-	public ImagesIterator(File dir) throws IOException {
+	public ImagesIterator(File dir, int setSize) throws IOException {
+		this.setSize = setSize;
+		this.position = 0;
 		if (!dir.isDirectory()) {
 			throw new IOException(dir + " is not a directory!");
 		}
@@ -72,7 +82,11 @@ public class ImagesIterator implements Iterator<Image> {
 	}
 
 	public boolean hasNext() {
-		return imageIterator.hasNext();
+		if (setSize < 0 || position < setSize) {
+			return imageIterator.hasNext();
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -81,6 +95,11 @@ public class ImagesIterator implements Iterator<Image> {
 	 * @return Retruns next image from directory as BufferedImage object
 	 */
 	public Image next() {
+		position++;
+		if (setSize > 0 && position > setSize) {
+			throw new NoSuchElementException();
+		}
+
 		File nextFile = imageIterator.next();
 		currentFilename = nextFile.getName();
 

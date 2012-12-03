@@ -12,9 +12,10 @@ public class NeuroAnalytics {
 	private boolean verbose = false;
 	private Brain curBrain = null;
 	enum evalMode {simple, firstmatch, relative};
+	private int setSize = -1;
 
 	public NeuroAnalytics(String loadPath, Double low, Double high, Double step, String param, Integer
-			neuronsInLayer, boolean verbose) throws Exception {
+			neuronsInLayer, int setSize, boolean verbose) throws Exception {
 		// parse arguments
 		/*
 		CmdLineParser cmd = new CmdLineParser();
@@ -30,6 +31,7 @@ public class NeuroAnalytics {
 		String param = cmd.getOptionValue(paramOption);
 		*/
 		// verify if everything necessary is provided
+		this.setSize = setSize;
 		if (param==null || high == null || low == null) {
 			System.out.println("Specify all params! --lo(num) -- hi(num) --st(num) -p('hidden'|'lrate'|'layer') [--nr(num)]");
 			return;
@@ -178,7 +180,8 @@ public class NeuroAnalytics {
 		for (int l=0; l<layercnt;l++) layers[l] = hidden;
 		factory.setHiddenLayers(layers);
 		factory.setMBP_learnRate(learnrate);
-		return factory.createFromTrainSet(loadPath, verbose);
+		// TODO: specify set size
+		return factory.createFromTrainSet(loadPath, setSize, verbose);
 	}
 
 	// used to be able to sort results of the ask function.

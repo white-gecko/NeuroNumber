@@ -150,7 +150,7 @@ public class BrainFactory {
 	 *         NeuralNetwork
 	 * @throws Exception
 	 */
-	public Brain createFromTrainSet(String path, boolean verbose)
+	public Brain createFromTrainSet(String path, int setSize, boolean verbose)
 			throws Exception {
 		// The trainings data
 		DataSet trainSet; // could be TrainingSet<TrainingElement>
@@ -187,7 +187,7 @@ public class BrainFactory {
 			}
 
 			images.putAll(ImagesLoader.getFractionRgbDataForDirectory(
-					directory, dimension));
+					directory, dimension, setSize));
 
 			label = directory.getName();
 			labels.add(label);

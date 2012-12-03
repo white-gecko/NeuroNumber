@@ -43,6 +43,7 @@ public class NeuroNumber {
 		Option<Double> highOption = cmd.addDoubleOption("hi");
 		Option<Double> stepOption = cmd.addDoubleOption("st");
 		Option<Integer> neuronsOption = cmd.addIntegerOption("nr");
+		Option<Integer> setsizeOption = cmd.addIntegerOption("sz");
 		cmd.parse(args);
 
 		String mode = cmd.getOptionValue(modeOption, "tell");
@@ -59,11 +60,12 @@ public class NeuroNumber {
 		Double high = cmd.getOptionValue(highOption);
 		Double step = cmd.getOptionValue(stepOption);
 		String param = cmd.getOptionValue(paramOption);
-		Integer neuronsInLayer = cmd.getOptionValue(neuronsOption);
+		int neuronsInLayer = cmd.getOptionValue(neuronsOption, 50);
+		int setSize = cmd.getOptionValue(setsizeOption, -1);
 		// distinguish between modes
 		if (mode.compareTo("al") == 0) {
 			// the code is running in constructor
-			new NeuroAnalytics(loadPath, low, high, step, param, neuronsInLayer, verbose);
+			new NeuroAnalytics(loadPath, low, high, step, param, neuronsInLayer, setSize, verbose);
 		}
 		else {
 			NeuroNumber app = new NeuroNumber(mode, loadPath, storePath, filePath,
@@ -165,7 +167,7 @@ public class NeuroNumber {
 
 	private void trainAndSleep() throws Exception {
 		System.out.println("Create a new brain and train it ...");
-		Brain brain = factory.createFromTrainSet(loadPath, verbose);
+		Brain brain = factory.createFromTrainSet(loadPath, -1, verbose);
 
 		System.out.println("Putting the brain to sleep.");
 		brain.sleepAt(storePath, verbose);

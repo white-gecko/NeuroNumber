@@ -1,6 +1,8 @@
 package at.neuro.number;
 
 import java.io.File;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +62,7 @@ public class BrainFactory {
 	/**
 	 * Set the dimensions to which the input images should be scalled w × h =
 	 * size of input layer
-	 *
+	 * 
 	 * @param w
 	 *            value for imageWidth
 	 * @param h
@@ -75,8 +77,9 @@ public class BrainFactory {
 	 * Set the configuration of the hidden layers e.g. {50, 30, 20} would mean,
 	 * there are 3 hidden layers: 1st with 50 neurons, 2nd with 30 neurons and
 	 * 3rd with 20 neurons
-	 *
-	 * @param layers an array with the configuration of the hidden layers
+	 * 
+	 * @param layers
+	 *            an array with the configuration of the hidden layers
 	 */
 	public void setHiddenLayers(int[] layers) {
 		hiddenLayers = new ArrayList<Integer>();
@@ -88,14 +91,19 @@ public class BrainFactory {
 
 	/**
 	 * Set the learning rule to use for training the network
-	 * @param learningRule an instance of LearningRule
+	 * 
+	 * @param learningRule
+	 *            an instance of LearningRule
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
 	 * @throws ClassNotFoundException
 	 */
-	public void setLearningRule(String learningRuleClass) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public void setLearningRule(String learningRuleClass)
+			throws InstantiationException, IllegalAccessException,
+			ClassNotFoundException {
 
-		Class<LearningRule> lr = (Class<LearningRule>) Class.forName(learningRuleClass);
+		Class<LearningRule> lr = (Class<LearningRule>) Class
+				.forName(learningRuleClass);
 
 		learningRule = lr.newInstance();
 	}
@@ -106,7 +114,9 @@ public class BrainFactory {
 
 	/**
 	 * Set the learning rule to use for training the network
-	 * @param learningRule an instance of LearningRule
+	 * 
+	 * @param learningRule
+	 *            an instance of LearningRule
 	 */
 	public void setLearningRule(LearningRule learningRule) {
 		this.learningRule = learningRule;
@@ -114,6 +124,7 @@ public class BrainFactory {
 
 	/**
 	 * Get the learning rule
+	 * 
 	 * @return
 	 */
 	private LearningRule getLearningRule() {
@@ -130,10 +141,13 @@ public class BrainFactory {
 
 	/**
 	 * Train a new network with the given image files
-	 *
-	 * @param path the path to the input image file
-	 * @param verbose whether the console output should be verbose
-	 * @return a new instance of Brain, which is a wrapper class of NeuralNetwork
+	 * 
+	 * @param path
+	 *            the path to the input image file
+	 * @param verbose
+	 *            whether the console output should be verbose
+	 * @return a new instance of Brain, which is a wrapper class of
+	 *         NeuralNetwork
 	 * @throws Exception
 	 */
 	public Brain createFromTrainSet(String path, boolean verbose)
@@ -182,12 +196,28 @@ public class BrainFactory {
 		trainSet = ImageRecognitionHelper.createBlackAndWhiteTrainingSet(
 				labels, images);
 
+		// redirect output to nirvana
+		PrintStream original = null;
+		if (!verbose) {
+			original = System.out;
+			System.setOut(new PrintStream(new OutputStream() {
+				public void write(int b) {
+					// DO NOTHING
+				}
+			}));
+		}
 		net = ImageRecognitionHelper.createNewNeuralNetwork(netLabel,
 				dimension, colorMode, labels, hiddenLayers,
 				TransferFunctionType.SIGMOID);
 
+		// change redirection back to original
+		if (original != null) {
+			System.setOut(original);
+		}
+		
 		if (verbose) {
-			System.out.println("New Network of type " + net.getClass().getCanonicalName());
+			System.out.println("New Network of type "
+					+ net.getClass().getCanonicalName());
 		}
 
 		net.learn(trainSet, getLearningRule());
@@ -198,10 +228,13 @@ public class BrainFactory {
 
 	/**
 	 * Load a ready trained network from a file
-	 *
-	 * @param loadPath path to the .nnet file of the neural network
-	 * @param verbose whether the console output should be verbose
-	 * @return a new instance of Brain, which is a wrapper class of NeuralNetwork
+	 * 
+	 * @param loadPath
+	 *            path to the .nnet file of the neural network
+	 * @param verbose
+	 *            whether the console output should be verbose
+	 * @return a new instance of Brain, which is a wrapper class of
+	 *         NeuralNetwork
 	 */
 	public Brain createFromFile(String loadPath, boolean verbose) {
 		NeuralNetwork net = NeuralNetwork.load(loadPath);

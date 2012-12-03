@@ -60,11 +60,12 @@ public class NeuroAnalytics {
 		else if (step == null) System.out.println("Specify the step!");
 		System.out.println("Entering analytics! Going to manipulare param "+param+"within bounds"
 				+low.toString()+" to "+high.toString()+" by "+step.toString());
+		System.out.println(param+";simple_accurancy;firstmatch;relative_accurancy");
 		// instantiate, there will be just 1 instance and curBrain will
 		// be overwritten each time; Constructor needs the path to training set
 		// cycle for the parameter examined
 		while ( next <= high) {
-			System.out.println("\nGoing to make new brain with param "+param+": "+next.toString());
+			System.out.println(next.toString()+";");
 			// depending on -p option either hidden or learning rate are changed
 			if (param.compareTo("hidden")== 0) {
 				hidden = next.intValue();
@@ -79,11 +80,12 @@ public class NeuroAnalytics {
 			curBrain = trainAndReady(layers, hidden, learnrate);
 			// evaluate the different accuracies on this brain
 			double simAccuracy = evaluateAccuracy(evalMode.simple);
-			System.out.println("For param "+param+":"+next.toString()+" is simple accuracy: "+simAccuracy);
+			System.out.print(simAccuracy+";");
 			double fmAccuracy = evaluateAccuracy(evalMode.firstmatch);
-			System.out.println("For param "+param+":"+next.toString()+" is firstmatch accuracy: "+fmAccuracy);
+			System.out.print(fmAccuracy+";");
 			double relAccuracy = evaluateAccuracy(evalMode.relative);
-			System.out.println("For param "+param+":"+next.toString()+" is relative accuracy: "+relAccuracy);
+			System.out.print(relAccuracy);
+			System.out.println();
 			next+=step;
 			}
 	}
@@ -175,8 +177,8 @@ public class NeuroAnalytics {
 
 	// create a new Brain and train it based on testset on loadpath(is hardcoded to 'Trainset' now.
 	private Brain trainAndReady(Integer layercnt, Integer hidden, double learnrate) throws Exception {
-		System.out.println("Create a new brain and train it ...");
-		System.out.println("Having "+layercnt+" layers with "+hidden+" neurons each");
+		//** System.out.println("Create a new brain and train it ...");
+		//** System.out.println("Having "+layercnt+" layers with "+hidden+" neurons each");
 		BrainFactory factory = new BrainFactory();
 		int[] layers = new int[layercnt];
 		for (int l=0; l<layercnt;l++) layers[l] = hidden;

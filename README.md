@@ -48,7 +48,7 @@ You can run the programm in two modes:
   * `--sz` specifies the set size spezifies how many of the images in the training set are used for this run, ignored when used -param size
   * example: (java -jar neuronumber.jar) -m al -p hidden --lo 10 --hi 30 --st 5 would analyze the accuracy with 10,15,..30 neurons(in 1 hidden layer)
   * example: (java -jar neuronumber.jar) -m al -p layer --lo 1 --hi 3 --nr 10 would analyze the accuracy with 1,2,3 hidden layers(having each 10 neurons)
-  * example: (java -jar neuronumber.jar) -m al -p size --lo 3 --hi 10 would analyze the accuracy with 3 to 10 images pro number taken into learning
+  * example: (java -jar neuronumber.jar) -m al -p size --lo 3 --hi 10 --st 1 would analyze the accuracy with 3 to 10 images pro number taken into learning
 
 
 

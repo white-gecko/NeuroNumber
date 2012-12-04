@@ -39,14 +39,16 @@ You can run the programm in two modes:
 
 ###Analyze
   * `-m` or `--mode` is set to `al`
-  * `-p` or `--param` specifies parameter to be changed - hidden(count of hidden neurons-1 layer), layer(count of layers), lrate(learning rate)
+  * `-p` or `--param` specifies parameter to be changed - hidden(count of hidden neurons-1 layer), layer(count of layers), lrate(learning rate), size(size of training set pro number)
+    note that the -param size overrules the --sz option
   * `--lo` specifies the lower bound for given parameters
   * `--hi` specifies the higher bound for given parameters
   * `--st` specifies the step for increase. For -p layer not compulsory(by default 1)
   * `--nr` specifies number of neurons in each hidden layer, compulsory by option -p layer.
-  * `--sz` specifies the set size spezifies how many of the images in the training set are used for this run.
+  * `--sz` specifies the set size spezifies how many of the images in the training set are used for this run, ignored when used -param size
   * example: (java -jar neuronumber.jar) -m al -p hidden --lo 10 --hi 30 --st 5 would analyze the accuracy with 10,15,..30 neurons(in 1 hidden layer)
   * example: (java -jar neuronumber.jar) -m al -p layer --lo 1 --hi 3 --nr 10 would analyze the accuracy with 1,2,3 hidden layers(having each 10 neurons)
+  * example: (java -jar neuronumber.jar) -m al -p size --lo 3 --hi 10 would analyze the accuracy with 3 to 10 images pro number taken into learning
 
 
 

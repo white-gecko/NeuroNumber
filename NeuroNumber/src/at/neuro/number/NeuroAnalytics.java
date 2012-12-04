@@ -72,6 +72,9 @@ public class NeuroAnalytics {
 			else if (param.compareTo("layer")== 0) {
 				layers = next.intValue();
 			}
+			else if (param.compareTo("size")== 0) {
+				this.setSize = next.intValue();
+			}
 			// make a new brain with this new value of a parameter
 			curBrain = trainAndReady(layers, hidden, learnrate);
 			// evaluate the different accuracies on this brain
@@ -181,6 +184,7 @@ public class NeuroAnalytics {
 		factory.setHiddenLayers(layers);
 		factory.setMBP_learnRate(learnrate);
 		// TODO: specify set size
+		//System.out.println("debug: going to train with setsize"+setSize);
 		return factory.createFromTrainSet(loadPath, setSize, verbose);
 	}
 

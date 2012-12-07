@@ -1,9 +1,13 @@
 package at.neuro.number.gui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.HashMap;
 
 import javax.swing.BoxLayout;
@@ -12,6 +16,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import at.neuro.number.Brain;
 import at.neuro.number.BrainFactory;
@@ -20,19 +26,21 @@ import at.neuro.number.neurophstudio.DrawingPanel;
 
 public class DrawPanel extends JFrame {
 
-	/**
-	 * 
-	 */
+	private boolean verbose = false;
+	private Brain brain = null;
+	private File brainFile = null;
+
 	private static final long serialVersionUID = -8645826887759259894L;
 
-	public DrawPanel(String name, String loadPath) {
+	public DrawPanel(String name, String loadPath, boolean verbose) {
 		super(name);
+
+		this.verbose = verbose;
 
 		JPanel p = new JPanel();
 		BoxLayout layout = new BoxLayout(p, BoxLayout.PAGE_AXIS);
 		p.setLayout(layout);
 
-		File brainFile;
 		if (loadPath == null) {
 			JFileChooser brainChooser = new JFileChooser();
 			brainChooser.showOpenDialog(p);
@@ -56,16 +64,45 @@ public class DrawPanel extends JFrame {
 		drawingPanel.addMouseListener(dl1);
 		drawingPanel.setPreferredSize(new java.awt.Dimension(200, 250));
 
+		JPanel buttonPanel = new JPanel();
+		FlowLayout buttonLayout = new FlowLayout();
+		buttonPanel.setLayout(buttonLayout);
+		p.add(buttonPanel);
+
 		JButton resetButton = new JButton("reset");
-		resetButton.addActionListener(new ResetListener(drawingPanel));
-		p.add(resetButton);
+		buttonPanel.add(resetButton);
 
 		JButton recognizeButton = new JButton("recognize");
-		recognizeButton.addActionListener(new RecognizeListener(drawingPanel,
-				brainFile));
-		p.add(recognizeButton);
+		buttonPanel.add(recognizeButton);
+
+
+		JTextArea output = new JTextArea("", 13, 50);
+		output.setLineWrap(true);
+		output.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane(output);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	
+		p.add(scrollPane);
+
+		resetButton.addActionListener(new ResetListener(drawingPanel));
+
+		recognizeButton.addActionListener(new RecognizeListener(drawingPanel));
+
+		System.setOut(new PrintStream(new TextAreaStream(output)));
 
 		add(p, BorderLayout.CENTER);
+	}
+
+	private Brain getBrain() {
+
+		if (brain == null) {
+			System.out.println("Wakeing up the brain …");
+			BrainFactory factory = new BrainFactory();
+			brain = factory
+					.createFromFile(brainFile.getAbsolutePath(), verbose);
+		}
+
+		return brain;
 	}
 
 	private class ResetListener implements ActionListener {
@@ -84,44 +121,55 @@ public class DrawPanel extends JFrame {
 	private class RecognizeListener implements ActionListener {
 
 		private DrawingPanel drawingPanel;
-		private File brainFile;
 
-		public RecognizeListener(DrawingPanel drawingPanel, File brainFile) {
+		public RecognizeListener(DrawingPanel drawingPanel) {
 			this.drawingPanel = drawingPanel;
-			this.brainFile = brainFile;
 		}
 
 		public void actionPerformed(ActionEvent arg0) {
 			try {
 				File file = drawingPanel.saveDrawnLetter("dont_know.png");
 
-				/*
-				 * PrintStream original = null; original = System.out;
-				 * System.setOut(new PrintStream(new OutputStream() { public
-				 * void write(int b) {
-				 * 
-				 * } }));
-				 */
-
-				System.out.println("Wakeing up the brain ...");
-				BrainFactory factory = new BrainFactory();
-				Brain brain = factory.createFromFile(
-						brainFile.getAbsolutePath(), false);
+				Brain brain = getBrain();
 
 				HashMap<String, Double> result = brain.ask(
-						file.getAbsolutePath(), false);
-				brain.interprete(result, false);
-
-				/*
-				 * // change redirection back to original if (original != null)
-				 * { System.setOut(original); }
-				 */
-
+						file.getAbsolutePath(), verbose);
+				brain.interprete(result, verbose);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private class TextAreaStream extends OutputStream {
+
+		JTextArea output;
+
+		public TextAreaStream(JTextArea output) {
+			this.output = output;
+		}
+
+		@Override
+		public void write(int b) throws IOException {
+			addText(String.valueOf((char) b));
+		}
+
+		@Override
+		public void write(byte[] b, int off, int len) throws IOException {
+			addText(new String(b, off, len));
+		}
+
+		@Override
+		public void write(byte[] b) throws IOException {
+			write(b, 0, b.length);
+		}
+		
+		private void addText(String text) {
+			output.append(text);
+			int end = output.getText().length();
+			output.setCaretPosition(end);
+		}
+
 	}
 
 }

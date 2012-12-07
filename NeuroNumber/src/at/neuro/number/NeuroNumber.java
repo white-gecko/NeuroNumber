@@ -190,7 +190,7 @@ public class NeuroNumber {
 	}
 	
 	private void gui() {
-		JFrame frame = new DrawPanel("NeuroNumber", loadPath);
+		JFrame frame = new DrawPanel("NeuroNumber", loadPath, verbose);
 		frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);

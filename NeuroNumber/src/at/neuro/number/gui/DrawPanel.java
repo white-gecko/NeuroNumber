@@ -33,7 +33,8 @@ public class DrawPanel extends JFrame {
 
 	private static final long serialVersionUID = -8645826887759259894L;
 
-	public DrawPanel(String name, String loadPath, boolean verbose) {
+	public DrawPanel(String name, String loadPath, boolean verbose)
+			throws IOException {
 		super(name);
 
 		this.verbose = verbose;
@@ -47,7 +48,8 @@ public class DrawPanel extends JFrame {
 			brainChooser.showOpenDialog(p);
 			brainFile = brainChooser.getSelectedFile();
 			if (brainFile == null) {
-				JOptionPane.showMessageDialog(p, "No network file selected!", "Error", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(p, "No network file selected!",
+						"Error", JOptionPane.PLAIN_MESSAGE);
 				System.out.println("No network file selected!");
 				System.exit(1);
 			}
@@ -81,13 +83,13 @@ public class DrawPanel extends JFrame {
 		JButton recognizeButton = new JButton("recognize");
 		buttonPanel.add(recognizeButton);
 
-
 		JTextArea output = new JTextArea("", 13, 50);
 		output.setLineWrap(true);
 		output.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(output);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	
+		scrollPane
+				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
 		p.add(scrollPane);
 
 		resetButton.addActionListener(new ResetListener(drawingPanel));
@@ -134,12 +136,13 @@ public class DrawPanel extends JFrame {
 
 		public void actionPerformed(ActionEvent arg0) {
 			try {
-				File file = drawingPanel.saveDrawnLetter("dont_know.png");
+				File tmpFile = File.createTempFile("neuronumber-", ".png");
+				drawingPanel.saveDrawnLetter(tmpFile);
 
 				Brain brain = getBrain();
 
 				HashMap<String, Double> result = brain.ask(
-						file.getAbsolutePath(), verbose);
+						tmpFile.getAbsolutePath(), verbose);
 				brain.interprete(result, verbose);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -169,7 +172,7 @@ public class DrawPanel extends JFrame {
 		public void write(byte[] b) throws IOException {
 			write(b, 0, b.length);
 		}
-		
+
 		private void addText(String text) {
 			output.append(text);
 			int end = output.getText().length();

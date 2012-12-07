@@ -189,7 +189,7 @@ public class NeuroNumber {
 		brain.interprete(result, verbose);
 	}
 	
-	private void gui() {
+	private void gui() throws IOException {
 		JFrame frame = new DrawPanel("NeuroNumber", loadPath, verbose);
 		frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		frame.pack();

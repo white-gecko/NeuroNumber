@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -45,6 +46,11 @@ public class DrawPanel extends JFrame {
 			JFileChooser brainChooser = new JFileChooser();
 			brainChooser.showOpenDialog(p);
 			brainFile = brainChooser.getSelectedFile();
+			if (brainFile == null) {
+				JOptionPane.showMessageDialog(p, "No network file selected!", "Error", JOptionPane.PLAIN_MESSAGE);
+				System.out.println("No network file selected!");
+				System.exit(1);
+			}
 		} else {
 			brainFile = new File(loadPath);
 		}

@@ -7,6 +7,10 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.swing.JFrame;
+
+import at.neuro.number.gui.DrawPanel;
+
 import com.sanityinc.jargs.CmdLineParser;
 import com.sanityinc.jargs.CmdLineParser.Option;
 
@@ -157,6 +161,10 @@ public class NeuroNumber {
 						.println("And trying to recognice: " + filePath + ".");
 			}
 			ask();
+		} else if (mode.compareTo("gui") == 0) {
+			System.out.println("Start programm in GUI mode.");
+			gui();
+			
 		} else {
 			System.out.println("I don't know, what you mean with '" + mode
 					+ "' and my brain can't help me!");
@@ -179,6 +187,13 @@ public class NeuroNumber {
 
 		HashMap<String, Double> result = brain.ask(filePath, verbose);
 		brain.interprete(result, verbose);
+	}
+	
+	private void gui() {
+		JFrame frame = new DrawPanel("NeuroNumber", loadPath);
+		frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	private void printLicense() throws IOException {
